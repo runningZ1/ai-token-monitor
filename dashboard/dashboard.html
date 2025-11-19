@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChatGPT Token 统计看板</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="app-container">
+        <header class="main-header">
+            <div class="logo-section">
+                <div class="logo-icon">
+                    <!-- Simple SVG Icon Placeholder -->
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z"
+                            stroke="currentColor" stroke-width="2" />
+                        <path d="M12 8V12L15 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                </div>
+                <h1>ChatGPT Token 统计</h1>
+            </div>
+            <div class="controls">
+                <select id="timeRange" class="time-select">
+                    <option value="24h">最近 24 小时</option>
+                    <option value="7d" selected>最近 7 天</option>
+                    <option value="30d">最近 30 天</option>
+                </select>
+                <button id="refreshBtn" class="icon-btn" title="刷新数据">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M23 4v6h-6M1 20v-6h6" />
+                        <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15" />
+                    </svg>
+                </button>
+            </div>
+        </header>
+
+        <main class="dashboard-content">
+            <!-- Overview Cards -->
+            <section class="overview-grid">
+                <div class="card metric-card">
+                    <div class="metric-header">
+                        <h3>总 Token (估算)</h3>
+                        <span class="tooltip" title="基于字符长度的粗略估算">?</span>
+                    </div>
+                    <div class="metric-value" id="totalTokens">0</div>
+                    <div class="metric-trend" id="totalTokensTrend">--</div>
+                </div>
+                <div class="card metric-card">
+                    <h3>输入 Token</h3>
+                    <div class="metric-value" id="inputTokens">0</div>
+                    <div class="metric-sub">用户提问</div>
+                </div>
+                <div class="card metric-card">
+                    <h3>输出 Token</h3>
+                    <div class="metric-value" id="outputTokens">0</div>
+                    <div class="metric-sub">AI 回复</div>
+                </div>
+                <div class="card metric-card">
+                    <h3>对话轮数</h3>
+                    <div class="metric-value" id="totalTurns">0</div>
+                    <div class="metric-sub">交互次数</div>
+                </div>
+            </section>
+
+            <div class="main-grid">
+                <!-- Left Column: Charts & Details -->
+                <div class="left-col">
+                    <!-- Charts Section -->
+                    <section class="card chart-card">
+                        <div class="card-header">
+                            <h3>使用趋势</h3>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="usageChart"></canvas>
+                        </div>
+                    </section>
+
+                    <!-- Recent Sessions -->
+                    <section class="card sessions-card">
+                        <div class="card-header">
+                            <h3>近期会话</h3>
+                        </div>
+                        <div class="table-container">
+                            <table id="sessionsTable">
+                                <thead>
+                                    <tr>
+                                        <th>时间</th>
+                                        <th>模式</th>
+                                        <th>轮数</th>
+                                        <th class="text-right">Token</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Session rows will be populated here -->
+                                    <tr>
+                                        <td colspan="4" class="empty-state">暂无数据</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- Right Column: Mode Stats & Actions -->
+                <!DOCTYPE html>
+                <html lang="zh-CN">
+
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>ChatGPT Token 统计看板</title>
+                    <link rel="stylesheet" href="dashboard.css">
+                    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
+                        rel="stylesheet">
+                </head>
+
+                <body>
+                    <div class="app-container">
+                        <header class="main-header">
+                            <div class="logo-section">
+                                <div class="logo-icon">
+                                    <!-- Simple SVG Icon Placeholder -->
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z"
+                                            stroke="currentColor" stroke-width="2" />
+                                        <path d="M12 8V12L15 15" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
+                                </div>
+                                <h1>ChatGPT Token 统计</h1>
+                            </div>
+                            <div class="controls">
+                                <select id="timeRange" class="time-select">
+                                    <option value="24h">最近 24 小时</option>
+                                    <option value="7d" selected>最近 7 天</option>
+                                    <option value="30d">最近 30 天</option>
+                                </select>
+                                <button id="refreshBtn" class="icon-btn" title="刷新数据">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <path d="M23 4v6h-6M1 20v-6h6" />
+                                        <path
+                                            d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </header>
+
+                        <main class="dashboard-content">
+                            <!-- Overview Cards -->
+                            <section class="overview-grid">
+                                <div class="card metric-card">
+                                    <div class="metric-header">
+                                        <h3>总 Token (估算)</h3>
+                                        <span class="tooltip" title="基于字符长度的粗略估算">?</span>
+                                    </div>
+                                    <div class="metric-value" id="totalTokens">0</div>
+                                    <div class="metric-trend" id="totalTokensTrend">--</div>
+                                </div>
+                                <div class="card metric-card">
+                                    <h3>输入 Token</h3>
+                                    <div class="metric-value" id="inputTokens">0</div>
+                                    <div class="metric-sub">用户提问</div>
+                                </div>
+                                <div class="card metric-card">
+                                    <h3>输出 Token</h3>
+                                    <div class="metric-value" id="outputTokens">0</div>
+                                    <div class="metric-sub">AI 回复</div>
+                                </div>
+                                <div class="card metric-card">
+                                    <h3>对话轮数</h3>
+                                    <div class="metric-value" id="totalTurns">0</div>
+                                    <div class="metric-sub">交互次数</div>
+                                </div>
+                            </section>
+
+                            <div class="main-grid">
+                                <!-- Left Column: Charts & Details -->
+                                <div class="left-col">
+                                    <!-- Charts Section -->
+                                    <section class="card chart-card">
+                                        <div class="card-header">
+                                            <h3>使用趋势</h3>
+                                        </div>
+                                        <div class="chart-container">
+                                            <canvas id="usageChart"></canvas>
+                                        </div>
+                                    </section>
+
+                                    <!-- Recent Sessions -->
+                                    <section class="card sessions-card">
+                                        <div class="card-header">
+                                            <h3>近期会话</h3>
+                                        </div>
+                                        <div class="table-container">
+                                            <table id="sessionsTable">
+                                                <thead>
+                                                    <tr>
+                                                        <th>时间</th>
+                                                        <th>模式</th>
+                                                        <th>轮数</th>
+                                                        <th class="text-right">Token</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <!-- Session rows will be populated here -->
+                                                    <tr>
+                                                        <td colspan="4" class="empty-state">暂无数据</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </section>
+
+                                    <!-- Daily Stats -->
+                                    <section class="card daily-stats-card">
+                                        <div class="card-header">
+                                            <h3>每日统计</h3>
+                                        </div>
+                                        <div class="table-container">
+                                            <table id="dailyStatsTable">
+                                                <thead>
+                                                    <tr>
+                                                        <th>日期</th>
+                                                        <th class="text-right">Token</th>
+                                                        <th class="text-right">轮数</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <!-- Daily stats rows will be populated here -->
+                                                    <tr>
+                                                        <td colspan="3" class="empty-state">暂无数据</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </section>
+                                </div>
+
+                                <!-- Right Column: Mode Stats & Actions -->
+                                <div class="right-col">
+                                    <!-- Mode Stats -->
+                                    <section class="card mode-card">
+                                        <div class="card-header">
+                                            <h3>模式分布</h3>
+                                        </div>
+                                        <div id="modeStatsList" class="mode-list">
+                                            <!-- Mode items will be populated here -->
+                                            <div class="empty-state">暂无数据</div>
+                                        </div>
+                                    </section>
+
+                                    <!-- Actions -->
+                                    <section class="card actions-card">
+                                        <div class="card-header">
+                                            <h3>数据管理</h3>
+                                        </div>
+                                        <div class="action-buttons">
+                                            <button id="exportBtn" class="btn-secondary">导出数据</button>
+                                            <button id="clearDataBtn" class="btn-danger">清空所有数据</button>
+                                        </div>
+                                        <div class="storage-info">
+                                            <small id="storageUsage">使用量: 0 KB</small>
+                                        </div>
+                                        <p class="privacy-note">
+                                            所有数据仅保存在您的本地浏览器中，不会上传到任何服务器。
+                                        </p>
+                                    </section>
+                                </div>
+                            </div>
+                        </main>
+                    </div>
+
+                    <!-- Scripts -->
+                    <script src="../utils/storage.js"></script>
+                    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                    <script src="dashboard.js"></script>
+                </body>
+
+                </html>

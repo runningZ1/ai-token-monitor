@@ -1,0 +1,165 @@
+{
+  "master": {
+    "tasks": [
+      {
+        "id": 1,
+        "title": "Setup Chrome Extension Foundation",
+        "description": "Create the basic Chrome extension structure with manifest, background script, and popup interface",
+        "details": "1. Create manifest.json with required permissions for chatgpt.com access and storage\n2. Implement background service worker for extension lifecycle management\n3. Create popup.html and popup.js for extension icon interaction\n4. Set up basic file structure (background/, content/, popup/, dashboard/)\n5. Configure webpack/build process for extension packaging\n6. Add extension icons and basic styling",
+        "testStrategy": "1. Load extension in Chrome developer mode\n2. Verify popup opens correctly when clicking extension icon\n3. Check that required permissions are granted\n4. Test extension installation and uninstallation process\n5. Verify background script initializes properly",
+        "priority": "high",
+        "dependencies": [],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 2,
+        "title": "Implement Content Script for ChatGPT Monitoring",
+        "description": "Develop content script to inject into ChatGPT pages and monitor DOM changes for message detection",
+        "details": "1. Create content script that runs on chatgpt.com/c/* URLs\n2. Implement MutationObserver to detect new message elements\n3. Add message element selectors for both user and AI messages\n4. Create message parsing logic to extract text content and metadata\n5. Implement session detection based on URL patterns\n6. Add error handling for DOM structure changes",
+        "testStrategy": "1. Test on various ChatGPT conversation pages\n2. Verify message detection works for different conversation types\n3. Check that script doesn't interfere with ChatGPT functionality\n4. Validate session identification accuracy\n5. Test with rapid message sending to ensure no missed messages",
+        "priority": "high",
+        "dependencies": [
+          1
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 3,
+        "title": "Build Token Estimation and Data Processing Engine",
+        "description": "Create logic for estimating tokens from text length and processing message data",
+        "details": "1. Implement character-to-token estimation algorithm (rough approximation)\n2. Create message data structure with required fields (sessionId, role, textLength, estimatedTokens, timestamp)\n3. Add ChatGPT mode detection from page elements\n4. Implement conversation turn counting logic\n5. Create data aggregation functions (hourly, daily, by mode)\n6. Add data validation and sanitization",
+        "testStrategy": "1. Test token estimation accuracy against known token counts\n2. Verify mode detection works across different ChatGPT modes\n3. Validate conversation turn counting logic\n4. Test data aggregation with sample datasets\n5. Check for memory leaks with large datasets",
+        "priority": "high",
+        "dependencies": [
+          2
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 4,
+        "title": "Implement Local Storage System",
+        "description": "Set up Chrome storage API for saving and retrieving token usage data locally",
+        "details": "1. Design storage schema for messages, sessions, and aggregated statistics\n2. Implement chrome.storage.local operations (save, retrieve, delete)\n3. Create data migration/versioning system\n4. Add data compression for large datasets\n5. Implement efficient indexing for quick queries\n6. Add storage quota management",
+        "testStrategy": "1. Test data persistence across browser sessions\n2. Verify storage performance with large datasets\n3. Test data migration between versions\n4. Check storage quota handling\n5. Validate data integrity after storage operations",
+        "priority": "high",
+        "dependencies": [
+          3
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 5,
+        "title": "Create Dashboard HTML Structure and Layout",
+        "description": "Build the main dashboard page with responsive layout and component structure",
+        "details": "1. Create dashboard.html with semantic HTML structure\n2. Implement responsive CSS layout using modern techniques\n3. Design component structure (header, time selector, overview cards, charts, tables)\n4. Add Chinese language support and typography\n5. Create loading states and error handling UI\n6. Implement dark/light theme support (optional for V1)",
+        "testStrategy": "1. Test responsive layout across different screen sizes\n2. Verify component rendering and styling\n3. Check accessibility compliance\n4. Test with different Chinese fonts\n5. Validate loading states and error messages",
+        "priority": "medium",
+        "dependencies": [
+          4
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 6,
+        "title": "Implement Time Range Selection Functionality",
+        "description": "Add interactive time range picker for filtering data by recent periods",
+        "details": "1. Create time range selector component (24h, 7d, 30d options)\n2. Implement date/time filtering logic for stored data\n3. Add default time range selection\n4. Create real-time data updates when switching time ranges\n5. Add custom date range picker (optional for V1)\n6. Implement loading states during data filtering",
+        "testStrategy": "1. Test time range switching accuracy\n2. Verify data filtering works correctly for each period\n3. Check performance with large datasets\n4. Test edge cases (no data, partial data)\n5. Validate loading state behavior",
+        "priority": "medium",
+        "dependencies": [
+          5
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 7,
+        "title": "Build Overview Statistics Cards",
+        "description": "Create prominent display cards showing key metrics (input tokens, output tokens, total tokens, conversation turns)",
+        "details": "1. Design and implement metric cards layout\n2. Create real-time calculation functions for each metric\n3. Add number formatting and display logic\n4. Implement animated counters for metric values\n5. Add 'estimated' disclaimer to token counts\n6. Create visual hierarchy and styling for emphasis",
+        "testStrategy": "1. Test metric calculations against sample data\n2. Verify number formatting and display accuracy\n3. Check animation performance\n4. Test with zero and very large numbers\n5. Validate visual design and readability",
+        "priority": "medium",
+        "dependencies": [
+          6
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 8,
+        "title": "Implement Trend Visualization Charts",
+        "description": "Add interactive charts showing token usage trends over time using a lightweight charting library",
+        "details": "1. Integrate lightweight charting library (Chart.js or similar)\n2. Create line charts for token usage over time\n3. Implement data aggregation for chart display (hourly/daily)\n4. Add interactive chart features (hover, zoom if needed)\n5. Create loading states for chart rendering\n6. Add chart configuration for different time ranges",
+        "testStrategy": "1. Test chart rendering with various dataset sizes\n2. Verify chart accuracy against raw data\n3. Check interactive features functionality\n4. Test performance with large time ranges\n5. Validate responsive chart display",
+        "priority": "medium",
+        "dependencies": [
+          7
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 9,
+        "title": "Build Mode and Session Statistics Views",
+        "description": "Create detailed breakdowns of token usage by ChatGPT mode and individual session information",
+        "details": "1. Implement mode-based aggregation and display\n2. Create session list with sorting and filtering\n3. Add session details modal or expanded view\n4. Implement mode switching detection and updates\n5. Add session search and navigation features\n6. Create statistics tables with proper formatting",
+        "testStrategy": "1. Test mode aggregation accuracy\n2. Verify session listing and sorting\n3. Check session detail display\n4. Test with mixed mode conversations\n5. Validate search and filter functionality",
+        "priority": "medium",
+        "dependencies": [
+          8
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 10,
+        "title": "Implement Data Clearing and Privacy Features",
+        "description": "Add secure data deletion and privacy controls to meet user data protection requirements",
+        "details": "1. Create 'Clear All Data' button with confirmation dialog\n2. Implement secure data deletion from Chrome storage\n3. Add data export functionality (optional for V1)\n4. Create privacy policy display and consent management\n5. Add data retention information display\n6. Implement data anonymization features",
+        "testStrategy": "1. Test data deletion completeness and security\n2. Verify confirmation dialog prevents accidental deletion\n3. Check privacy policy display\n4. Test data export functionality if implemented\n5. Validate user consent flow",
+        "priority": "low",
+        "dependencies": [
+          9
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 11,
+        "title": "Add Performance Optimization and Reliability Features",
+        "description": "Optimize extension performance and add error handling for production readiness",
+        "details": "1. Implement data compression for large datasets\n2. Add background processing for heavy calculations\n3. Create error boundary and recovery mechanisms\n4. Optimize DOM queries and event listeners\n5. Add extension performance monitoring\n6. Implement graceful degradation for feature failures",
+        "testStrategy": "1. Test performance with large datasets (>10k messages)\n2. Verify error handling doesn't break core functionality\n3. Check memory usage over extended periods\n4. Test graceful degradation scenarios\n5. Validate extension doesn't impact ChatGPT performance",
+        "priority": "low",
+        "dependencies": [
+          10
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 12,
+        "title": "Conduct Comprehensive Testing and Quality Assurance",
+        "description": "Perform end-to-end testing, user acceptance testing, and prepare for Chrome Web Store submission",
+        "details": "1. Create comprehensive test suite covering all features\n2. Test across different ChatGPT conversation types and modes\n3. Validate with real user scenarios and edge cases\n4. Test extension installation and update process\n5. Prepare Chrome Web Store listing materials\n6. Create user documentation and privacy policy\n7. Test for security vulnerabilities and data leaks",
+        "testStrategy": "1. Execute automated test suite\n2. Conduct manual testing across different scenarios\n3. Test extension with various ChatGPT usage patterns\n4. Validate privacy and security requirements\n5. Test Chrome Web Store submission process\n6. Verify user documentation accuracy",
+        "priority": "medium",
+        "dependencies": [
+          11
+        ],
+        "status": "pending",
+        "subtasks": []
+      }
+    ],
+    "metadata": {
+      "created": "2025-11-18T15:34:25.559Z",
+      "updated": "2025-11-18T15:34:25.560Z",
+      "description": "Tasks for master context"
+    }
+  }
+}
